@@ -1,220 +1,572 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Portfolio Ari Parta - Fullstack Android Developer">
+    <meta name="keywords" content="Ari Parta, Android Developer, Fullstack, Mobile Programming, Web Programming">
+    <meta name="author" content="Ari Parta">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
-    <title>Biodata Saya</title>
+    
+    <title>Ari Parta - Portfolio</title>
 </head>
-<body>
-
-    <div class="container">
-        <center>
-            <h1 style="font-size: 68px;">Biodata Saya</h1>
-        </center>
-        <div class="menu-wrap">
-            <ul>
-                <li><a href="/">Beranda</a></li>
-                <li><a href="#">Menu</a>
-                    <ul>
-                        <li><a href="#profileKu">Profile</a></li>
-                        <li><a href="#kemampuanKu">Kemampuan</a></li>
-                        <li><a href="#pengalamanKu">Pengalaman</a></li>
-                        <li><a href="#pendidikanKu">Pendidikan</a></li>
-                        <li><a href="#projectKu">Project</a></li>
-                    </ul>
+<body data-theme="light">
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home">Ari Parta</a>
+            </div>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
                 </li>
-                <li><a href="#hubungiKu">Kontak Saya</a></li>
-                <li class="form-cari">
-                    <form action="index.html" method="POST">
-                        <input type="text" placeholder="Cari">
-                        <button type="cari" name="button">Cari</button>
-                    </form>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#skills" class="nav-link">Skills</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#projects" class="nav-link">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#experience" class="nav-link">Experience</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
                 </li>
             </ul>
-          </div>
+            
+            <div class="nav-controls">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i data-feather="sun" class="theme-icon"></i>
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-        <table class="kelas-table">
-            <tr>
-                <td id="profileKu" class="profile">
-                    <hr>
-                    <h1 class="judul">Profile</h1>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Hi, I'm <span class="hero-name">Ari Parta</span>
+                </h1>
+                <div class="hero-subtitle">
+                    <span class="typing-text" id="typing-text"></span>
+                    <span class="cursor">|</span>
+                </div>
+                <p class="hero-description">
+                    Passionate Android Developer with expertise in fullstack mobile development and web programming.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                    <a href="#projects" class="btn btn-secondary">View My Work</a>
+                </div>
+            </div>
+            <div class="hero-scroll">
+                <a href="#about" class="scroll-indicator">
+                    <i data-feather="chevron-down"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
-                    <div>
-                        <img src="images/profile.jpg" alt="">
-                        <span>
-                            <pre>Nama     : Ari Parta</pre>
-                            <pre>NIM      : 160202004</pre>
-                            <pre>Kelas    : TI A</pre>
-                            <pre>MK       : Perancangan Web</pre>
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Get to know me better</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="image-wrapper">
+                        <img src="images/profile.jpg" alt="Ari Parta Profile" class="profile-image">
+                        <div class="image-overlay"></div>
+                    </div>
+                </div>
+                
+                <div class="about-info">
+                    <h3 class="about-name">Ari Parta</h3>
+                    <p class="about-role">Fullstack Android Developer</p>
+                    
+                    <div class="about-description">
+                        <p>
+                            I'm a passionate developer with expertise in Android development and web programming. 
+                            With years of experience in both frontend and backend development, I create innovative 
+                            mobile solutions that deliver exceptional user experiences.
+                        </p>
+                        <p>
+                            My journey in technology started with a curiosity about how things work, and it has 
+                            evolved into a career focused on building applications that make a difference.
+                        </p>
+                    </div>
+                    
+                    <div class="about-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Name:</span>
+                            <span class="detail-value">Ari Parta</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">Lombok, Indonesia</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Experience:</span>
+                            <span class="detail-value">7+ Years</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Specialization:</span>
+                            <span class="detail-value">Android Development</span>
+                        </div>
+                    </div>
+                    
+                    <div class="about-actions">
+                        <a href="#contact" class="btn btn-primary">Hire Me</a>
+                        <a href="assets/resume.pdf" class="btn btn-outline" download>Download CV</a>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="GitHub">
+                            <i data-feather="github"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">
+                            <i data-feather="linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <i data-feather="twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <i data-feather="instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <p class="section-subtitle">Technologies I work with</p>
+            </div>
+            
+            <div class="skills-content">
+                <div class="skill-category">
+                    <h3 class="category-title">Programming</h3>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Web Programming</span>
+                                <span class="skill-percentage">60%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="60"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Desktop Programming</span>
+                                <span class="skill-percentage">30%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="30"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">Mobile Programming</span>
+                                <span class="skill-percentage">75%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="75"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-item">
+                            <div class="skill-header">
+                                <span class="skill-name">MikroKontroler</span>
+                                <span class="skill-percentage">60%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="60"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="category-title">Technologies</h3>
+                    <div class="tech-grid">
+                        <div class="tech-item">
+                            <div class="tech-icon">
+                                <i data-feather="smartphone"></i>
+                            </div>
+                            <h4>Android Development</h4>
+                            <p>Native Android apps with Java/Kotlin</p>
+                        </div>
+                        
+                        <div class="tech-item">
+                            <div class="tech-icon">
+                                <i data-feather="code"></i>
+                            </div>
+                            <h4>Web Development</h4>
+                            <p>Modern web applications with HTML, CSS, JS</p>
+                        </div>
+                        
+                        <div class="tech-item">
+                            <div class="tech-icon">
+                                <i data-feather="database"></i>
+                            </div>
+                            <h4>Backend Development</h4>
+                            <p>Server-side development and APIs</p>
+                        </div>
+                        
+                        <div class="tech-item">
+                            <div class="tech-icon">
+                                <i data-feather="cpu"></i>
+                            </div>
+                            <h4>IoT & Hardware</h4>
+                            <p>Microcontroller programming and IoT solutions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">Some of my recent work</p>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card" data-project="kelombok">
+                    <div class="project-image">
+                        <img src="images/project.jpg" alt="KeLombok App">
+                        <div class="project-overlay">
+                            <div class="project-actions">
+                                <button class="btn btn-icon" onclick="openProjectModal('kelombok')">
+                                    <i data-feather="eye"></i>
+                                </button>
+                                <a href="#" class="btn btn-icon">
+                                    <i data-feather="external-link"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon">
+                                    <i data-feather="github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">KeLombok</h3>
+                        <p class="project-description">
+                            Project Aplikasi Traveling Untuk Pulau Lombok Berbasis Android
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Android</span>
+                            <span class="tag">Java</span>
+                            <span class="tag">Travel</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-project="pintu-otomatis">
+                    <div class="project-image">
+                        <img src="images/project.jpg" alt="Pintu Otomatis">
+                        <div class="project-overlay">
+                            <div class="project-actions">
+                                <button class="btn btn-icon" onclick="openProjectModal('pintu-otomatis')">
+                                    <i data-feather="eye"></i>
+                                </button>
+                                <a href="#" class="btn btn-icon">
+                                    <i data-feather="external-link"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon">
+                                    <i data-feather="github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Pintu Otomatis</h3>
+                        <p class="project-description">
+                            Pintu Otomatis Dengan Sensor Suara Berbasis Android
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Android</span>
+                            <span class="tag">IoT</span>
+                            <span class="tag">Hardware</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Experience & Education</h2>
+                <p class="section-subtitle">My professional journey</p>
+            </div>
+            
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3>Fullstack Android Developer</h3>
+                                <span class="timeline-date">2017 - Present</span>
+                            </div>
+                            <p class="timeline-description">
+                                Developing end-to-end Android applications with focus on user experience 
+                                and performance optimization. Working with modern Android development tools 
+                                and frameworks.
+                            </p>
+                            <div class="timeline-skills">
+                                <span class="skill-tag">Android</span>
+                                <span class="skill-tag">Java</span>
+                                <span class="skill-tag">Kotlin</span>
+                                <span class="skill-tag">Firebase</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3>Frontend Android Developer</h3>
+                                <span class="timeline-date">2018 - Present</span>
+                            </div>
+                            <p class="timeline-description">
+                                Specializing in Android UI/UX development, creating intuitive and 
+                                responsive user interfaces that provide excellent user experiences.
+                            </p>
+                            <div class="timeline-skills">
+                                <span class="skill-tag">UI/UX</span>
+                                <span class="skill-tag">Material Design</span>
+                                <span class="skill-tag">XML</span>
+                                <span class="skill-tag">Jetpack Compose</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3>SMK Kesehatan</h3>
+                                <span class="timeline-date">2015</span>
+                            </div>
+                            <p class="timeline-description">
+                                Completed vocational education in health sciences, providing a strong 
+                                foundation in analytical thinking and problem-solving skills.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <h3>SMKN 2 Selong</h3>
+                                <span class="timeline-date">2012 - 2015</span>
+                            </div>
+                            <p class="timeline-description">
+                                Vocational high school education focusing on technical skills and 
+                                practical knowledge in technology and engineering.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Let's work together</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Let's talk about your project</h3>
+                    <p>
+                        I'm always interested in new opportunities and exciting projects. 
+                        Whether you have a question or just want to say hi, feel free to reach out!
+                    </p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i data-feather="mail"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Email</h4>
+                                <p>ari.parta@example.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i data-feather="map-pin"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Location</h4>
+                                <p>Lombok, Indonesia</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i data-feather="phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Phone</h4>
+                                <p>+62 xxx xxxx xxxx</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <span class="error-message" id="name-error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                        <span class="error-message" id="subject-error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <span class="error-message" id="message-error"></span>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-loading" style="display: none;">
+                            <i data-feather="loader" class="spinning"></i>
+                            Sending...
                         </span>
-                    </div>
-                </td>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
 
-                <td id="skillKu" class="skill">
-                    <hr>
-                    <h1 class="judul">Kemampuan</h1>
-
-                    <div class="konten">
-                        <ul>
-                            <li>Pemrograman WEB
-                                <div class="level" style="width: 60%;">
-                                    60%
-                                </div>
-                            </li>
-                            <li>Pemrograman Desktop
-                                <div class="level" style="width: 30%;">
-                                    30%
-                                </div>
-                            </li>
-                            <li>Pemrograman Mobile
-                                <div class="level" style="width: 75%;">
-                                    75%
-                                </div>
-                            </li>
-                            <li>MikroKontroler
-                                <div class="level" style="width: 60%;">
-                                    60%
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td id="pengalamanKu">
-                    <hr>
-                    <h1 class="judul">Pengalaman</h1>
-                    <div>
-                        <p>Pengalaman Saya!!</p>
-                    </div>
-
-                    <table class="tabel">
-                        <tr>
-                            <th>No</th>
-                            <th>Pengalaman</th>
-                            <th>Tahun</th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Fullstack Android</td>
-                            <td>2017 - Sekarang</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Frontend Android</td>
-                            <td>2018 - Sekarang</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Kosong</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Kosong</td>
-                            <td>-</td>
-                        </tr>
-                    </table>
-                </td>
-
-                <td id="pendidikanKu">
-                    <hr>
-                    <h1 class="judul">Pendidikan</h1>
-                    <div>
-                        <p>Pendidikan yang sudah saya tempuh!!</p>
-                    </div>
-
-                    <table class="tabel">
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Institusi</th>
-                            <th>Tahun Lulus</th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>SDN 1 Dasan Geres</td>
-                            <td>2009</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>MTs Dasan Geres</td>
-                            <td>2012</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>SMKN 2 Selong</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>SMK Kesehatan</td>
-                            <td>2015</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="project" colspan="2" id="projectKu">
-                    <hr>
-                    <h1 class="judul">Project</h1>
-
-                    <div>
-                        <div class="konten">
-                            <img src="images/project.jpg" alt="">
-                            <h2>KeLombok</h2>
-                            <p>Project Aplikasi Traveling Untuk Pulau Lombok Berbasis Android!!</p>
-                        </div>
-
-                        <div class="konten">
-                            <img src="images/project.jpg" alt="">
-                            <h2>Pintu Otomatis</h2>
-                            <p>Pintu Otomatis Dengan Sensor Suara Berbasis Android.</p>
-                        </div>
-
-                        <div class="konten">
-                            <img src="images/project.jpg" alt="">
-                            <h2>Kosong</h2>
-                            <p>Slot Kosong</p>
-                        </div>
-
-                        <div class="konten">
-                            <img src="images/project.jpg" alt="">
-                            <h2>Kosong</h2>
-                            <p>Slot Kosong</p>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        
-    </div>
-
-    <footer>
-        <div id="hubungiKu" class="container">
-            <form action="index.html" method="POST">
-                <hr>
-                <h1 class="judul">Hubungi Saya</h1>
-                <div class="form-group">
-                    <input type="text" name="" value="" placeholder="Nama">
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2024 Ari Parta. All rights reserved.</p>
                 </div>
-                <div class="form-group">
-                    <input type="text" name="" value="" placeholder="Email">
+                <div class="footer-social">
+                    <a href="#" class="social-link">
+                        <i data-feather="github"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i data-feather="linkedin"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i data-feather="twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i data-feather="instagram"></i>
+                    </a>
                 </div>
-
-                <div class="form-group">
-                    <textarea name="pesan" cols="30" rows="8" placeholder="Isi Pesan Anda"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <button type="submit" name="button">Kirim</button>
-                    <button type="reset" name="button">Bersihkan</button>
-                </div>
-            </form>
+            </div>
         </div>
     </footer>
 
+    <!-- Project Modal -->
+    <div class="modal" id="project-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Project Title</h3>
+                <button class="modal-close" onclick="closeProjectModal()">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-image" src="" alt="Project Image">
+                </div>
+                <div class="modal-info">
+                    <p id="modal-description">Project description</p>
+                    <div class="modal-tags" id="modal-tags"></div>
+                    <div class="modal-links">
+                        <a href="#" class="btn btn-primary" id="modal-demo">Live Demo</a>
+                        <a href="#" class="btn btn-outline" id="modal-github">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js" defer></script>
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+    </script>
 </body>
 </html>
