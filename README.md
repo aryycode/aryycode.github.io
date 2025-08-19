@@ -111,6 +111,76 @@ aryycode.github.io/
 3. **Akses Website**
    Buka browser dan kunjungi: `http://localhost:3000`
 
+## 📧 Setup EmailJS (Form Kontak)
+
+Untuk mengaktifkan form kontak yang dapat mengirim email sungguhan:
+
+### 1. Buat Akun EmailJS
+
+1. Kunjungi [https://www.emailjs.com/](https://www.emailjs.com/)
+2. Daftar akun gratis
+3. Verifikasi email Anda
+
+### 2. Setup Email Service
+
+1. Di dashboard EmailJS, pilih **"Email Services"**
+2. Klik **"Add New Service"**
+3. Pilih provider email (Gmail, Outlook, Yahoo, dll)
+4. Ikuti instruksi untuk menghubungkan akun email
+5. Catat **Service ID** yang diberikan
+
+### 3. Buat Email Template
+
+1. Pilih **"Email Templates"**
+2. Klik **"Create New Template"**
+3. Gunakan template berikut:
+
+```html
+Subject: New Contact from {{from_name}}
+
+Hi,
+
+You have received a new message from your portfolio website:
+
+Name: {{from_name}}
+Email: {{from_email}}
+Subject: {{subject}}
+
+Message:
+{{message}}
+
+---
+Sent from your portfolio contact form
+```
+
+4. Catat **Template ID** yang diberikan
+
+### 4. Dapatkan User ID
+
+1. Buka **"Account"** > **"General"**
+2. Catat **User ID** Anda
+
+### 5. Konfigurasi di Kode
+
+Edit file `js/script.js` dan ganti konfigurasi EmailJS:
+
+```javascript
+const EMAILJS_CONFIG = {
+  serviceID: 'service_xxxxxxx',     // Ganti dengan Service ID Anda
+  templateID: 'template_xxxxxxx',   // Ganti dengan Template ID Anda
+  userID: 'user_xxxxxxxxxxxxxxx'    // Ganti dengan User ID Anda
+};
+```
+
+### 6. Test Form Kontak
+
+1. Buka website di browser
+2. Isi form kontak
+3. Klik "Send Message"
+4. Periksa email Anda untuk memastikan pesan diterima
+
+> **💡 Tips**: EmailJS gratis memberikan 200 email per bulan. Untuk kebutuhan lebih besar, upgrade ke plan berbayar.
+
 ## 🎯 Kustomisasi
 
 ### Mengubah Konten

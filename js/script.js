@@ -446,29 +446,81 @@ function clearFieldError(field) {
   }
 }
 
+// EmailJS Configuration
+// SETUP INSTRUCTIONS:
+// 1. Buat akun di https://www.emailjs.com/
+// 2. Buat email service (Gmail, Outlook, dll)
+// 3. Buat email template dengan variabel: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+// 4. Ganti nilai di bawah dengan konfigurasi EmailJS Anda:
+const EMAILJS_CONFIG = {
+  serviceID: "aryy_service", // Ganti dengan Service ID dari EmailJS
+  templateID: "aryy_template", // Ganti dengan Template ID dari EmailJS
+  userID: "0hU2MTdGg_xk5Xm58", // Ganti dengan User ID dari EmailJS
+};
+
 function submitForm(data) {
   const submitButton = document.querySelector(".contact-form .btn-primary");
   const originalText = submitButton.innerHTML;
+
+  // Validasi konfigurasi EmailJS
+  if (
+    EMAILJS_CONFIG.serviceID === "aryy_service" ||
+    EMAILJS_CONFIG.templateID === "aryy_template" ||
+    EMAILJS_CONFIG.userID === "0hU2MTdGg_xk5Xm58"
+  ) {
+    showNotification(
+      "EmailJS belum dikonfigurasi. Silakan setup EmailJS terlebih dahulu.",
+      "error"
+    );
+    return;
+  }
 
   // Show loading state
   submitButton.innerHTML = '<span class="spinner"></span> Sending...';
   submitButton.disabled = true;
 
-  // Simulate form submission (replace with actual endpoint)
-  setTimeout(() => {
-    // Reset form
-    document.querySelector(".contact-form").reset();
+  // Prepare template parameters
+  const templateParams = {
+    from_name: data.name,
+    from_email: data.email,
+    subject: data.subject,
+    message: data.message,
+  };
 
-    // Reset button
-    submitButton.innerHTML = originalText;
-    submitButton.disabled = false;
+  // Send email using EmailJS
+  emailjs
+    .send(
+      EMAILJS_CONFIG.serviceID,
+      EMAILJS_CONFIG.templateID,
+      templateParams,
+      EMAILJS_CONFIG.userID
+    )
+    .then(function (response) {
+      console.log("Email sent successfully:", response);
 
-    // Show success message
-    showNotification(
-      "Message sent successfully! I'll get back to you soon.",
-      "success"
-    );
-  }, 2000);
+      // Reset form
+      document.querySelector(".contact-form").reset();
+
+      // Show success message
+      showNotification(
+        "Message sent successfully! I'll get back to you soon.",
+        "success"
+      );
+    })
+    .catch(function (error) {
+      console.error("Email sending failed:", error);
+
+      // Show error message
+      showNotification(
+        "Failed to send message. Please try again or contact me directly.",
+        "error"
+      );
+    })
+    .finally(function () {
+      // Reset button state
+      submitButton.innerHTML = originalText;
+      submitButton.disabled = false;
+    });
 }
 
 // Notification System
