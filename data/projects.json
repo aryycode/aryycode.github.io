@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "KeLombok Tourism",
+    "category": "Mobile App",
+    "description": "Comprehensive tourism application for Lombok Island featuring travel guides, local recommendations, and interactive maps.",
+    "image": "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20mobile%20app%20interface%20tourism%20lombok%20island%20clean%20design%20blue%20green%20colors&image_size=landscape_4_3",
+    "technologies": ["Android", "Kotlin", "Firebase", "Maps API"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "title": "Smart Door System",
+    "category": "IoT Project",
+    "description": "Intelligent automatic door control system with IoT integration, mobile app control, and security features.",
+    "image": "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=smart%20door%20automation%20system%20IoT%20device%20modern%20technology%20blue%20white%20colors&image_size=landscape_4_3",
+    "technologies": ["Arduino", "ESP32", "Android", "MQTT"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "featured": true
+  },
+  {
+    "id": 3,
+    "title": "Analytics Dashboard",
+    "category": "Web Application",
+    "description": "Modern web dashboard for data visualization and analytics with real-time updates and interactive charts.",
+    "image": "https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20web%20application%20dashboard%20clean%20interface%20purple%20blue%20gradient&image_size=landscape_4_3",
+    "technologies": ["React", "Node.js", "MongoDB", "Chart.js"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "featured": true
+  }
+]

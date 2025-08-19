@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Frontend Development",
+    "description": "Creating responsive and interactive user interfaces",
+    "icon": "code",
+    "technologies": ["React", "Vue.js", "JavaScript", "TypeScript", "CSS3", "HTML5"]
+  },
+  {
+    "id": 2,
+    "title": "Backend Development",
+    "description": "Building robust and scalable server-side applications",
+    "icon": "server",
+    "technologies": ["Node.js", "Express", "Python", "PHP", "MySQL", "MongoDB"]
+  },
+  {
+    "id": 3,
+    "title": "Mobile Development",
+    "description": "Native and cross-platform mobile applications",
+    "icon": "smartphone",
+    "technologies": ["Android", "Kotlin", "Java", "Flutter", "React Native", "Firebase"]
+  },
+  {
+    "id": 4,
+    "title": "Database & Cloud",
+    "description": "Data management and cloud infrastructure",
+    "icon": "database",
+    "technologies": ["PostgreSQL", "Redis", "AWS", "Docker", "Git", "CI/CD"]
+  },
+  {
+    "id": 5,
+    "title": "UI/UX Design",
+    "description": "Designing intuitive and beautiful user experiences",
+    "icon": "palette",
+    "technologies": ["Figma", "Adobe XD", "Prototyping", "Wireframing", "User Research", "Design Systems"]
+  },
+  {
+    "id": 6,
+    "title": "IoT & Hardware",
+    "description": "Internet of Things and embedded systems",
+    "icon": "cpu",
+    "technologies": ["Arduino", "ESP32", "Raspberry Pi", "Sensors", "MQTT", "C++"]
+  }
+]

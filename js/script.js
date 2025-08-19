@@ -1,575 +1,675 @@
-// ===== GLOBAL VARIABLES =====
-let currentTheme = localStorage.getItem('theme') || 'light';
-let typingIndex = 0;
-let typingSpeed = 100;
-let deletingSpeed = 50;
-let pauseTime = 2000;
-let isDeleting = false;
-let currentTextIndex = 0;
+// Modern Portfolio JavaScript - Interactive Features
 
-// Typing texts array
-const typingTexts = [
-  'Fullstack Developer',
-  'Mobile App Developer',
-  'Web Developer',
-  'Software Engineer'
-];
+// DOM Content Loaded Event
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize Lucide icons first
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
 
-// ===== DOM CONTENT LOADED =====
-document.addEventListener('DOMContentLoaded', function() {
+  // Initialize all features
   initializeTheme();
   initializeNavigation();
-  initializeTypingAnimation();
-  initializeScrollAnimations();
-  initializeSkillsAnimation();
+  initializeAnimations();
+  initializeTypingEffect();
   initializeContactForm();
-  initializeModals();
-  initializeSmoothScrolling();
-  initializeActiveNavigation();
+  initializeScrollEffects();
+  initializeMobileMenu();
+  initializeScrollToTop();
+  initializeParallax();
+  initializeProgressBars();
+  initializeCounters();
+  initializeLazyLoading();
+  initializeDynamicContent();
 });
 
-// ===== THEME MANAGEMENT =====
+// Theme Management
 function initializeTheme() {
-  const themeToggle = document.querySelector('.theme-toggle');
-  const body = document.body;
-  
-  // Set initial theme
-  body.setAttribute('data-theme', currentTheme);
-  updateThemeIcon();
-  
+  const themeToggle = document.querySelector(".theme-toggle");
+  const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+  // Get saved theme or use system preference
+  const currentTheme =
+    localStorage.getItem("theme") ||
+    (prefersDarkScheme.matches ? "dark" : "light");
+
+  // Apply initial theme
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  updateThemeIcon(currentTheme);
+
   // Theme toggle event listener
   if (themeToggle) {
-    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "light";
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+      // Add smooth transition
+      document.documentElement.style.transition = "all 0.3s ease";
+
+      // Apply new theme
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+
+      updateThemeIcon(newTheme);
+
+      // Remove transition after animation
+      setTimeout(() => {
+        document.documentElement.style.transition = "";
+      }, 300);
+    });
+  } else {
+    console.warn("Theme toggle button not found");
   }
+
+  // Listen for system theme changes
+  prefersDarkScheme.addEventListener("change", function (e) {
+    if (!localStorage.getItem("theme")) {
+      const newTheme = e.matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      updateThemeIcon(newTheme);
+    }
+  });
 }
 
-function toggleTheme() {
-  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-  document.body.setAttribute('data-theme', currentTheme);
-  localStorage.setItem('theme', currentTheme);
-  updateThemeIcon();
-  
-  // Add transition effect
-  document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
-  setTimeout(() => {
-    document.body.style.transition = '';
-  }, 300);
-}
-
-function updateThemeIcon() {
-  const themeToggle = document.querySelector('.theme-toggle');
+function updateThemeIcon(theme) {
+  const themeToggle = document.querySelector(".theme-toggle");
   if (themeToggle) {
-    const icon = themeToggle.querySelector('i');
-    if (icon) {
-      icon.className = currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+    // Add accessibility attributes
+    themeToggle.setAttribute(
+      "aria-label",
+      `Switch to ${theme === "dark" ? "light" : "dark"} theme`
+    );
+    themeToggle.setAttribute(
+      "title",
+      `Switch to ${theme === "dark" ? "light" : "dark"} theme`
+    );
+
+    // Get the single theme icon
+    const themeIcon = document.getElementById("theme-icon");
+
+    if (themeIcon) {
+      // Change icon type based on theme
+      if (theme === "dark") {
+        // Dark theme: show sun icon (to switch to light)
+        themeIcon.setAttribute("data-lucide", "sun");
+        // Set sun icon color to white directly
+        themeIcon.style.color = "white";
+      } else {
+        // Light theme: show moon icon (to switch to dark)
+        themeIcon.setAttribute("data-lucide", "moon");
+        // Reset color to use CSS variable
+        themeIcon.style.color = "";
+      }
+
+      // Re-initialize Lucide icons to update the icon
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
     }
   }
 }
 
-// ===== NAVIGATION =====
+// Navigation Management
 function initializeNavigation() {
-  const hamburger = document.querySelector('.hamburger');
-  const navMenu = document.querySelector('.nav-menu');
-  const navLinks = document.querySelectorAll('.nav-link');
-  
-  // Hamburger menu toggle
-  if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-  }
-  
-  // Close mobile menu when clicking on nav links
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      if (hamburger && navMenu) {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+  const navLinks = document.querySelectorAll(".nav-link");
+  const sections = document.querySelectorAll("section[id]");
+
+  // Smooth scrolling for navigation links
+  navLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute("href");
+      const targetSection = document.querySelector(targetId);
+
+      if (targetSection) {
+        const headerHeight = document.querySelector(".navbar").offsetHeight;
+        const targetPosition = targetSection.offsetTop - headerHeight;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth",
+        });
+
+        // Close mobile menu if open
+        closeMobileMenu();
       }
     });
   });
-  
-  // Close mobile menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (hamburger && navMenu && 
-        !hamburger.contains(e.target) && 
-        !navMenu.contains(e.target)) {
-      hamburger.classList.remove('active');
-      navMenu.classList.remove('active');
-    }
+
+  // Update active navigation link on scroll
+  window.addEventListener("scroll", function () {
+    const scrollPosition = window.scrollY + 100;
+
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const sectionId = section.getAttribute("id");
+
+      if (
+        scrollPosition >= sectionTop &&
+        scrollPosition < sectionTop + sectionHeight
+      ) {
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${sectionId}`) {
+            link.classList.add("active");
+          }
+        });
+      }
+    });
+
+    // Update header background on scroll
+    updateHeaderBackground();
   });
-  
-  // Navbar scroll effect
-  window.addEventListener('scroll', handleNavbarScroll);
 }
 
-function handleNavbarScroll() {
-  const navbar = document.querySelector('.navbar');
-  if (navbar) {
-    if (window.scrollY > 100) {
-      navbar.style.background = currentTheme === 'light' 
-        ? 'rgba(255, 255, 255, 0.98)' 
-        : 'rgba(26, 32, 44, 0.98)';
-      navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-    } else {
-      navbar.style.background = currentTheme === 'light' 
-        ? 'rgba(255, 255, 255, 0.95)' 
-        : 'rgba(26, 32, 44, 0.95)';
-      navbar.style.boxShadow = 'none';
-    }
-  }
-}
+function updateHeaderBackground() {
+  const header = document.querySelector(".navbar");
+  if (!header) return;
 
-// ===== TYPING ANIMATION =====
-function initializeTypingAnimation() {
-  const typingElement = document.querySelector('.typing-text');
-  if (typingElement) {
-    typeText(typingElement);
-  }
-}
+  const scrollPosition = window.scrollY;
+  const theme = document.documentElement.getAttribute("data-theme");
 
-function typeText(element) {
-  const currentText = typingTexts[currentTextIndex];
-  
-  if (isDeleting) {
-    element.textContent = currentText.substring(0, typingIndex - 1);
-    typingIndex--;
-    
-    if (typingIndex === 0) {
-      isDeleting = false;
-      currentTextIndex = (currentTextIndex + 1) % typingTexts.length;
-      setTimeout(() => typeText(element), 500);
-      return;
-    }
-    
-    setTimeout(() => typeText(element), deletingSpeed);
+  // Remove inline styles to let CSS variables handle theming
+  header.style.background = "";
+  header.style.backdropFilter = "";
+  header.style.boxShadow = "";
+
+  // Add scrolled class for styling
+  if (scrollPosition > 50) {
+    header.classList.add("scrolled");
   } else {
-    element.textContent = currentText.substring(0, typingIndex + 1);
-    typingIndex++;
-    
-    if (typingIndex === currentText.length) {
-      isDeleting = true;
-      setTimeout(() => typeText(element), pauseTime);
-      return;
-    }
-    
-    setTimeout(() => typeText(element), typingSpeed);
+    header.classList.remove("scrolled");
   }
 }
 
-// ===== SCROLL ANIMATIONS =====
-function initializeScrollAnimations() {
+// Mobile Menu Management
+function initializeMobileMenu() {
+  const mobileToggle = document.querySelector(".mobile-menu-toggle");
+  const navMenu = document.querySelector(".nav-menu");
+
+  if (mobileToggle && navMenu) {
+    mobileToggle.addEventListener("click", function () {
+      const isOpen = navMenu.classList.contains("active");
+
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", function (e) {
+      if (!mobileToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    // Close menu on escape key
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeMobileMenu();
+      }
+    });
+  }
+}
+
+function openMobileMenu() {
+  const navMenu = document.querySelector(".nav-menu");
+  const mobileToggle = document.querySelector(".mobile-menu-toggle");
+
+  navMenu.classList.add("active");
+  mobileToggle.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeMobileMenu() {
+  const navMenu = document.querySelector(".nav-menu");
+  const mobileToggle = document.querySelector(".mobile-menu-toggle");
+
+  navMenu.classList.remove("active");
+  mobileToggle.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+// Typing Effect
+function initializeTypingEffect() {
+  const typingElement = document.querySelector(".typing-text");
+  if (!typingElement) return;
+
+  const texts = [
+    "Full Stack Developer",
+    "UI/UX Designer",
+    "Problem Solver",
+    "Tech Enthusiast",
+  ];
+
+  let textIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let typingSpeed = 100;
+
+  function typeText() {
+    const currentText = texts[textIndex];
+
+    if (isDeleting) {
+      typingElement.textContent = currentText.substring(0, charIndex - 1);
+      charIndex--;
+      typingSpeed = 50;
+    } else {
+      typingElement.textContent = currentText.substring(0, charIndex + 1);
+      charIndex++;
+      typingSpeed = 100;
+    }
+
+    if (!isDeleting && charIndex === currentText.length) {
+      typingSpeed = 2000; // Pause at end
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      textIndex = (textIndex + 1) % texts.length;
+      typingSpeed = 500; // Pause before next text
+    }
+
+    setTimeout(typeText, typingSpeed);
+  }
+
+  typeText();
+}
+
+// Scroll Animations
+function initializeAnimations() {
   const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    rootMargin: "0px 0px -50px 0px",
   };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+        entry.target.classList.add("animate");
       }
     });
   }, observerOptions);
-  
-  // Observe elements with animation classes
-  const animatedElements = document.querySelectorAll(
-    '.fade-in, .slide-in-left, .slide-in-right'
-  );
-  
-  animatedElements.forEach(element => {
+
+  // Observe elements with scroll-animate class
+  const animateElements = document.querySelectorAll(".scroll-animate");
+  animateElements.forEach((element) => {
     observer.observe(element);
   });
-}
 
-// ===== SKILLS ANIMATION =====
-function initializeSkillsAnimation() {
-  const skillsSection = document.querySelector('.skills');
-  if (!skillsSection) return;
-  
-  const skillsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateSkillBars();
-        skillsObserver.unobserve(entry.target);
-      }
+  // Add scroll-animate class to various elements
+  const elementsToAnimate = [
+    ".section-header",
+    ".skill-card",
+    ".project-card",
+    ".timeline-item",
+    ".contact-card",
+    ".about-text",
+    ".stats-grid .stat-item",
+  ];
+
+  elementsToAnimate.forEach((selector) => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach((element, index) => {
+      element.classList.add("scroll-animate");
+      element.style.animationDelay = `${index * 0.1}s`;
+      observer.observe(element);
     });
-  }, { threshold: 0.5 });
-  
-  skillsObserver.observe(skillsSection);
-}
-
-function animateSkillBars() {
-  const skillBars = document.querySelectorAll('.skill-progress');
-  
-  skillBars.forEach((bar, index) => {
-    const percentage = bar.getAttribute('data-percentage') || '0';
-    
-    setTimeout(() => {
-      bar.style.width = percentage + '%';
-      
-      // Animate percentage counter
-      const percentageElement = bar.parentElement.nextElementSibling;
-      if (percentageElement && percentageElement.classList.contains('skill-percentage')) {
-        animateCounter(percentageElement, 0, parseInt(percentage), 1500);
-      }
-    }, index * 200);
   });
 }
 
-function animateCounter(element, start, end, duration) {
-  const startTime = performance.now();
-  
-  function updateCounter(currentTime) {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    
-    const current = Math.floor(start + (end - start) * easeOutCubic(progress));
-    element.textContent = current + '%';
-    
-    if (progress < 1) {
-      requestAnimationFrame(updateCounter);
-    }
-  }
-  
-  requestAnimationFrame(updateCounter);
-}
-
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-// ===== CONTACT FORM =====
+// Contact Form Management
 function initializeContactForm() {
-  const contactForm = document.querySelector('.contact-form');
+  const contactForm = document.querySelector(".contact-form");
   if (!contactForm) return;
-  
-  contactForm.addEventListener('submit', handleFormSubmit);
-  
-  // Real-time validation
-  const inputs = contactForm.querySelectorAll('input, textarea');
-  inputs.forEach(input => {
-    input.addEventListener('blur', () => validateField(input));
-    input.addEventListener('input', () => clearFieldError(input));
-  });
-}
 
-function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  const form = e.target;
-  const formData = new FormData(form);
-  const submitBtn = form.querySelector('.btn-primary');
-  const loadingBtn = form.querySelector('.btn-loading');
-  
-  // Validate all fields
-  if (!validateForm(form)) {
-    return;
-  }
-  
-  // Show loading state
-  submitBtn.style.display = 'none';
-  loadingBtn.style.display = 'flex';
-  
-  // Simulate form submission (replace with actual EmailJS or backend integration)
-  setTimeout(() => {
-    // Reset form
-    form.reset();
-    
-    // Hide loading state
-    submitBtn.style.display = 'flex';
-    loadingBtn.style.display = 'none';
-    
-    // Show success message
-    showNotification('Pesan berhasil dikirim! Terima kasih atas pesan Anda.', 'success');
-  }, 2000);
-}
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-function validateForm(form) {
-  const inputs = form.querySelectorAll('input[required], textarea[required]');
-  let isValid = true;
-  
-  inputs.forEach(input => {
-    if (!validateField(input)) {
-      isValid = false;
+    // Get form data
+    const formData = new FormData(this);
+    const formObject = {};
+    formData.forEach((value, key) => {
+      formObject[key] = value;
+    });
+
+    // Validate form
+    if (validateForm(formObject)) {
+      submitForm(formObject);
     }
   });
-  
+
+  // Real-time validation
+  const formInputs = contactForm.querySelectorAll("input, textarea, select");
+  formInputs.forEach((input) => {
+    input.addEventListener("blur", function () {
+      validateField(this);
+    });
+
+    input.addEventListener("input", function () {
+      clearFieldError(this);
+    });
+  });
+}
+
+function validateForm(data) {
+  let isValid = true;
+
+  // Name validation
+  if (!data.name || data.name.trim().length < 2) {
+    showFieldError("name", "Name must be at least 2 characters long");
+    isValid = false;
+  }
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!data.email || !emailRegex.test(data.email)) {
+    showFieldError("email", "Please enter a valid email address");
+    isValid = false;
+  }
+
+  // Subject validation
+  if (!data.subject || data.subject.trim().length < 5) {
+    showFieldError("subject", "Subject must be at least 5 characters long");
+    isValid = false;
+  }
+
+  // Message validation
+  if (!data.message || data.message.trim().length < 10) {
+    showFieldError("message", "Message must be at least 10 characters long");
+    isValid = false;
+  }
+
   return isValid;
 }
 
 function validateField(field) {
   const value = field.value.trim();
   const fieldName = field.name;
-  let isValid = true;
-  let errorMessage = '';
-  
-  // Clear previous errors
+
+  switch (fieldName) {
+    case "name":
+      if (value.length < 2) {
+        showFieldError(fieldName, "Name must be at least 2 characters long");
+        return false;
+      }
+      break;
+    case "email":
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        showFieldError(fieldName, "Please enter a valid email address");
+        return false;
+      }
+      break;
+    case "subject":
+      if (value.length < 5) {
+        showFieldError(fieldName, "Subject must be at least 5 characters long");
+        return false;
+      }
+      break;
+    case "message":
+      if (value.length < 10) {
+        showFieldError(
+          fieldName,
+          "Message must be at least 10 characters long"
+        );
+        return false;
+      }
+      break;
+  }
+
   clearFieldError(field);
-  
-  // Required field validation
-  if (field.hasAttribute('required') && !value) {
-    errorMessage = 'Field ini wajib diisi.';
-    isValid = false;
-  }
-  
-  // Email validation
-  if (fieldName === 'email' && value) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(value)) {
-      errorMessage = 'Format email tidak valid.';
-      isValid = false;
-    }
-  }
-  
-  // Name validation
-  if (fieldName === 'name' && value) {
-    if (value.length < 2) {
-      errorMessage = 'Nama minimal 2 karakter.';
-      isValid = false;
-    }
-  }
-  
-  // Message validation
-  if (fieldName === 'message' && value) {
-    if (value.length < 10) {
-      errorMessage = 'Pesan minimal 10 karakter.';
-      isValid = false;
-    }
-  }
-  
-  if (!isValid) {
-    showFieldError(field, errorMessage);
-  }
-  
-  return isValid;
+  return true;
 }
 
-function showFieldError(field, message) {
-  field.classList.add('error');
-  
-  let errorElement = field.parentElement.querySelector('.error-message');
-  if (!errorElement) {
-    errorElement = document.createElement('span');
-    errorElement.className = 'error-message';
-    field.parentElement.appendChild(errorElement);
+function showFieldError(fieldName, message) {
+  const field = document.querySelector(`[name="${fieldName}"]`);
+  const errorElement = field.parentNode.querySelector(".error-message");
+
+  field.classList.add("error");
+  if (errorElement) {
+    errorElement.textContent = message;
+    errorElement.style.display = "block";
   }
-  
-  errorElement.textContent = message;
 }
 
 function clearFieldError(field) {
-  field.classList.remove('error');
-  const errorElement = field.parentElement.querySelector('.error-message');
+  const errorElement = field.parentNode.querySelector(".error-message");
+
+  field.classList.remove("error");
   if (errorElement) {
-    errorElement.remove();
+    errorElement.style.display = "none";
   }
 }
 
-// ===== MODALS =====
-function initializeModals() {
-  const modalTriggers = document.querySelectorAll('[data-modal]');
-  const modals = document.querySelectorAll('.modal');
-  const modalCloses = document.querySelectorAll('.modal-close');
-  
-  // Open modal
-  modalTriggers.forEach(trigger => {
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      const modalId = trigger.getAttribute('data-modal');
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        openModal(modal);
-      }
-    });
-  });
-  
-  // Close modal
-  modalCloses.forEach(close => {
-    close.addEventListener('click', () => {
-      const modal = close.closest('.modal');
-      if (modal) {
-        closeModal(modal);
-      }
-    });
-  });
-  
-  // Close modal on backdrop click
-  modals.forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal(modal);
-      }
-    });
-  });
-  
-  // Close modal on Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const activeModal = document.querySelector('.modal.active');
-      if (activeModal) {
-        closeModal(activeModal);
-      }
-    }
-  });
+function submitForm(data) {
+  const submitButton = document.querySelector(".contact-form .btn-primary");
+  const originalText = submitButton.innerHTML;
+
+  // Show loading state
+  submitButton.innerHTML = '<span class="spinner"></span> Sending...';
+  submitButton.disabled = true;
+
+  // Simulate form submission (replace with actual endpoint)
+  setTimeout(() => {
+    // Reset form
+    document.querySelector(".contact-form").reset();
+
+    // Reset button
+    submitButton.innerHTML = originalText;
+    submitButton.disabled = false;
+
+    // Show success message
+    showNotification(
+      "Message sent successfully! I'll get back to you soon.",
+      "success"
+    );
+  }, 2000);
 }
 
-function openModal(modal) {
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal(modal) {
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// ===== SMOOTH SCROLLING =====
-function initializeSmoothScrolling() {
-  const scrollLinks = document.querySelectorAll('a[href^="#"]');
-  
-  scrollLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      
-      const targetId = link.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
-      
-      if (targetElement) {
-        const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-        const targetPosition = targetElement.offsetTop - navbarHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-  
-  // Scroll indicator
-  const scrollIndicator = document.querySelector('.scroll-indicator');
-  if (scrollIndicator) {
-    scrollIndicator.addEventListener('click', () => {
-      const aboutSection = document.querySelector('.about');
-      if (aboutSection) {
-        const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-        const targetPosition = aboutSection.offsetTop - navbarHeight;
-        
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  }
-}
-
-// ===== ACTIVE NAVIGATION =====
-function initializeActiveNavigation() {
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-  
-  if (sections.length === 0 || navLinks.length === 0) return;
-  
-  const observerOptions = {
-    threshold: 0.3,
-    rootMargin: '-100px 0px -100px 0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const sectionId = entry.target.id;
-        updateActiveNavLink(sectionId);
-      }
-    });
-  }, observerOptions);
-  
-  sections.forEach(section => {
-    observer.observe(section);
-  });
-}
-
-function updateActiveNavLink(sectionId) {
-  const navLinks = document.querySelectorAll('.nav-link');
-  
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    
-    const href = link.getAttribute('href');
-    if (href === `#${sectionId}`) {
-      link.classList.add('active');
-    }
-  });
-}
-
-// ===== NOTIFICATIONS =====
-function showNotification(message, type = 'info') {
-  // Remove existing notifications
-  const existingNotifications = document.querySelectorAll('.notification');
-  existingNotifications.forEach(notification => {
-    notification.remove();
-  });
-  
-  // Create notification element
-  const notification = document.createElement('div');
+// Notification System
+function showNotification(message, type = "info") {
+  const notification = document.createElement("div");
   notification.className = `notification notification-${type}`;
   notification.innerHTML = `
-    <div class="notification-content">
-      <span class="notification-message">${message}</span>
-      <button class="notification-close">&times;</button>
-    </div>
-  `;
-  
-  // Add styles
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: ${type === 'success' ? '#48bb78' : type === 'error' ? '#f56565' : '#4299e1'};
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10000;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    max-width: 400px;
-    word-wrap: break-word;
-  `;
-  
-  // Add to DOM
+        <div class="notification-content">
+            <span>${message}</span>
+            <button class="notification-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+
   document.body.appendChild(notification);
-  
-  // Animate in
+
+  // Show notification
   setTimeout(() => {
-    notification.style.transform = 'translateX(0)';
+    notification.classList.add("show");
   }, 100);
-  
-  // Close button functionality
-  const closeBtn = notification.querySelector('.notification-close');
-  closeBtn.addEventListener('click', () => {
-    removeNotification(notification);
-  });
-  
-  // Auto remove after 5 seconds
+
+  // Auto hide after 5 seconds
   setTimeout(() => {
-    removeNotification(notification);
+    hideNotification(notification);
   }, 5000);
+
+  // Close button event
+  notification
+    .querySelector(".notification-close")
+    .addEventListener("click", () => {
+      hideNotification(notification);
+    });
 }
 
-function removeNotification(notification) {
-  notification.style.transform = 'translateX(100%)';
+function hideNotification(notification) {
+  notification.classList.remove("show");
   setTimeout(() => {
-    if (notification.parentElement) {
-      notification.remove();
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
     }
   }, 300);
 }
 
-// ===== UTILITY FUNCTIONS =====
+// Scroll Effects
+function initializeScrollEffects() {
+  let ticking = false;
+
+  function updateScrollEffects() {
+    const scrolled = window.pageYOffset;
+    const rate = scrolled * -0.5;
+
+    // Parallax effect for hero section
+    const hero = document.querySelector(".hero");
+    if (hero) {
+      hero.style.transform = `translateY(${rate}px)`;
+    }
+
+    ticking = false;
+  }
+
+  function requestTick() {
+    if (!ticking) {
+      requestAnimationFrame(updateScrollEffects);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener("scroll", requestTick);
+}
+
+// Scroll to Top Button
+function initializeScrollToTop() {
+  const scrollToTopBtn = document.querySelector(".scroll-to-top");
+  if (!scrollToTopBtn) return;
+
+  window.addEventListener("scroll", function () {
+    if (window.pageYOffset > 300) {
+      scrollToTopBtn.style.display = "flex";
+      scrollToTopBtn.style.opacity = "1";
+    } else {
+      scrollToTopBtn.style.opacity = "0";
+      setTimeout(() => {
+        if (window.pageYOffset <= 300) {
+          scrollToTopBtn.style.display = "none";
+        }
+      }, 300);
+    }
+  });
+
+  scrollToTopBtn.addEventListener("click", function () {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+}
+
+// Parallax Effects
+function initializeParallax() {
+  const parallaxElements = document.querySelectorAll("[data-parallax]");
+
+  if (parallaxElements.length === 0) return;
+
+  function updateParallax() {
+    const scrolled = window.pageYOffset;
+
+    parallaxElements.forEach((element) => {
+      const rate = scrolled * (element.dataset.parallax || 0.5);
+      element.style.transform = `translateY(${rate}px)`;
+    });
+  }
+
+  window.addEventListener("scroll", updateParallax);
+}
+
+// Progress Bars Animation
+function initializeProgressBars() {
+  const progressBars = document.querySelectorAll(".skill-progress");
+
+  const progressObserver = new IntersectionObserver(
+    function (entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const progressBar = entry.target;
+          const percentage = progressBar.dataset.percentage || 0;
+
+          setTimeout(() => {
+            progressBar.style.width = `${percentage}%`;
+          }, 200);
+
+          progressObserver.unobserve(progressBar);
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  progressBars.forEach((bar) => {
+    progressObserver.observe(bar);
+  });
+}
+
+// Counter Animation
+function initializeCounters() {
+  const counters = document.querySelectorAll(".stat-number");
+
+  const counterObserver = new IntersectionObserver(
+    function (entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const counter = entry.target;
+          const target = parseInt(counter.dataset.count || counter.textContent);
+          const duration = 2000;
+          const step = target / (duration / 16);
+          let current = 0;
+
+          const updateCounter = () => {
+            current += step;
+            if (current < target) {
+              counter.textContent = Math.floor(current);
+              requestAnimationFrame(updateCounter);
+            } else {
+              counter.textContent = target;
+            }
+          };
+
+          updateCounter();
+          counterObserver.unobserve(counter);
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  counters.forEach((counter) => {
+    counterObserver.observe(counter);
+  });
+}
+
+// Lazy Loading for Images
+function initializeLazyLoading() {
+  const images = document.querySelectorAll("img[data-src]");
+
+  const imageObserver = new IntersectionObserver(function (entries) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.classList.remove("lazy");
+        imageObserver.unobserve(img);
+      }
+    });
+  });
+
+  images.forEach((img) => {
+    imageObserver.observe(img);
+  });
+}
+
+// Utility Functions
 function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
@@ -584,73 +684,295 @@ function debounce(func, wait) {
 
 function throttle(func, limit) {
   let inThrottle;
-  return function() {
+  return function () {
     const args = arguments;
     const context = this;
     if (!inThrottle) {
       func.apply(context, args);
       inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
+      setTimeout(() => (inThrottle = false), limit);
     }
-  }
-}
-
-// ===== PERFORMANCE OPTIMIZATIONS =====
-// Optimize scroll events
-window.addEventListener('scroll', throttle(() => {
-  handleNavbarScroll();
-}, 16)); // ~60fps
-
-// Optimize resize events
-window.addEventListener('resize', debounce(() => {
-  // Handle responsive adjustments if needed
-}, 250));
-
-// ===== ACCESSIBILITY ENHANCEMENTS =====
-// Keyboard navigation for modals
-document.addEventListener('keydown', (e) => {
-  const activeModal = document.querySelector('.modal.active');
-  if (activeModal && e.key === 'Tab') {
-    trapFocus(activeModal, e);
-  }
-});
-
-function trapFocus(modal, e) {
-  const focusableElements = modal.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
-  
-  const firstElement = focusableElements[0];
-  const lastElement = focusableElements[focusableElements.length - 1];
-  
-  if (e.shiftKey) {
-    if (document.activeElement === firstElement) {
-      e.preventDefault();
-      lastElement.focus();
-    }
-  } else {
-    if (document.activeElement === lastElement) {
-      e.preventDefault();
-      firstElement.focus();
-    }
-  }
-}
-
-// ===== ERROR HANDLING =====
-window.addEventListener('error', (e) => {
-  console.error('JavaScript Error:', e.error);
-  // You can add error reporting here
-});
-
-// ===== INITIALIZATION COMPLETE =====
-console.log('Portfolio website initialized successfully!');
-
-// Export functions for potential external use
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    toggleTheme,
-    showNotification,
-    openModal,
-    closeModal
   };
 }
+
+// Error Handling
+window.addEventListener("error", function (e) {
+  console.error("JavaScript Error:", e.error);
+});
+
+// Performance Monitoring
+if ("performance" in window) {
+  window.addEventListener("load", function () {
+    setTimeout(() => {
+      const perfData = performance.getEntriesByType("navigation")[0];
+      console.log(
+        "Page Load Time:",
+        perfData.loadEventEnd - perfData.loadEventStart,
+        "ms"
+      );
+    }, 0);
+  });
+}
+
+// Dynamic Content Loading
+function initializeDynamicContent() {
+  loadProjects();
+  loadExperience();
+  loadSkills();
+}
+
+// Load Projects from JSON
+async function loadProjects() {
+  try {
+    const response = await fetch("./data/projects.json");
+    const projects = await response.json();
+    renderProjects(projects);
+  } catch (error) {
+    console.error("Error loading projects:", error);
+  }
+}
+
+function renderProjects(projects) {
+  const projectsGrid = document.querySelector(".projects-grid");
+  if (!projectsGrid) return;
+
+  projectsGrid.innerHTML = "";
+
+  projects.forEach((project) => {
+    const projectCard = document.createElement("div");
+    projectCard.className = "project-card";
+    projectCard.innerHTML = `
+            <div class="project-image">
+                <img src="${project.image}" alt="${
+      project.title
+    }" loading="lazy">
+                <div class="project-overlay">
+                    <div class="project-links">
+                        <a href="${
+                          project.demoUrl || project.demo_url || "#"
+                        }" class="project-link" aria-label="View live demo" target="_blank">
+                            <i data-lucide="external-link"></i>
+                        </a>
+                        <a href="${
+                          project.githubUrl || project.github_url || "#"
+                        }" class="project-link" aria-label="View source code" target="_blank">
+                            <i data-lucide="github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="project-category">${project.category}</div>
+                <h3 class="project-title">${project.title}</h3>
+                <p class="project-description">${project.description}</p>
+                <div class="project-tech">
+                    ${project.technologies
+                      .map((tech) => `<span class="tech-tag">${tech}</span>`)
+                      .join("")}
+                </div>
+            </div>
+        `;
+
+    // Add click event listener to open modal
+    projectCard.addEventListener("click", () => {
+      openProjectModal(project);
+    });
+
+    projectsGrid.appendChild(projectCard);
+  });
+
+  // Re-initialize Lucide icons for new content
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+}
+
+// Load Experience from JSON
+async function loadExperience() {
+  try {
+    const response = await fetch("./data/experience.json");
+    const experiences = await response.json();
+    renderExperience(experiences);
+  } catch (error) {
+    console.error("Error loading experience:", error);
+  }
+}
+
+function renderExperience(experiences) {
+  const timeline = document.querySelector(".timeline");
+  if (!timeline) return;
+
+  timeline.innerHTML = "";
+
+  experiences.forEach((exp) => {
+    const timelineItem = document.createElement("div");
+    timelineItem.className = "timeline-item";
+    timelineItem.innerHTML = `
+            <div class="timeline-marker">
+                <div class="timeline-icon">
+                    <i data-lucide="${exp.icon}"></i>
+                </div>
+            </div>
+            <div class="timeline-content">
+                <div class="timeline-header">
+                    <h3 class="timeline-title">${exp.title}</h3>
+                    <span class="timeline-badge ${exp.type}">${exp.badge}</span>
+                </div>
+                <div class="timeline-meta">
+                    <span class="timeline-company">${exp.company}</span>
+                    <span class="timeline-period">${exp.period}</span>
+                </div>
+                <p class="timeline-description">${exp.description}</p>
+                ${
+                  exp.achievements
+                    ? `
+                    <ul class="timeline-achievements">
+                        ${exp.achievements
+                          .map((achievement) => `<li>${achievement}</li>`)
+                          .join("")}
+                    </ul>
+                `
+                    : ""
+                }
+                ${
+                  exp.skills
+                    ? `
+                    <div class="timeline-skills">
+                        ${exp.skills
+                          .map(
+                            (skill) => `<span class="skill-tag">${skill}</span>`
+                          )
+                          .join("")}
+                    </div>
+                `
+                    : ""
+                }
+            </div>
+        `;
+    timeline.appendChild(timelineItem);
+  });
+
+  // Re-initialize Lucide icons for new content
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+}
+
+// Load Skills from JSON
+async function loadSkills() {
+  try {
+    const response = await fetch("./data/skills.json");
+    const skills = await response.json();
+    renderSkills(skills);
+  } catch (error) {
+    console.error("Error loading skills:", error);
+  }
+}
+
+function renderSkills(skills) {
+  const skillsGrid = document.querySelector(".skills-grid");
+  if (!skillsGrid) return;
+
+  skillsGrid.innerHTML = "";
+
+  skills.forEach((skill) => {
+    const skillCard = document.createElement("div");
+    skillCard.className = "skill-card";
+    skillCard.innerHTML = `
+            <div class="skill-icon">
+                <i data-lucide="${skill.icon}"></i>
+            </div>
+            <h3 class="skill-title">${skill.title}</h3>
+            <p class="skill-description">${skill.description}</p>
+            <div class="skill-tags">
+                ${skill.technologies
+                  .map((tech) => `<span class="skill-tag">${tech}</span>`)
+                  .join("")}
+            </div>
+        `;
+    skillsGrid.appendChild(skillCard);
+  });
+
+  // Re-initialize Lucide icons for new content
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+}
+
+// Project Modal Functions
+function openProjectModal(project) {
+  const modal = document.getElementById("project-modal");
+  const modalTitle = document.getElementById("modal-title");
+  const modalImage = document.getElementById("modal-image");
+  const modalDescription = document.getElementById("modal-description");
+  const modalTags = document.getElementById("modal-tags");
+  const modalDemo = document.getElementById("modal-demo");
+  const modalGithub = document.getElementById("modal-github");
+
+  if (!modal) return;
+
+  // Populate modal content
+  modalTitle.textContent = project.title;
+  modalImage.src = project.image;
+  modalImage.alt = project.title;
+  modalDescription.textContent = project.description;
+
+  // Clear and populate tags
+  modalTags.innerHTML = "";
+  project.technologies.forEach((tech) => {
+    const tag = document.createElement("span");
+    tag.className = "tech-tag";
+    tag.textContent = tech;
+    modalTags.appendChild(tag);
+  });
+
+  // Set links
+  modalDemo.href = project.demoUrl || project.demo_url || "#";
+  modalGithub.href = project.githubUrl || project.github_url || "#";
+
+  // Show modal
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+
+  // Re-initialize Lucide icons
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+}
+
+function closeProjectModal() {
+  const modal = document.getElementById("project-modal");
+  if (!modal) return;
+
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+// Close modal when clicking outside
+document.addEventListener("click", function (e) {
+  const modal = document.getElementById("project-modal");
+  if (e.target === modal) {
+    closeProjectModal();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    closeProjectModal();
+  }
+});
+
+// Export functions for external use
+window.PortfolioJS = {
+  showNotification,
+  updateThemeIcon,
+  validateForm,
+  debounce,
+  throttle,
+  loadProjects,
+  loadExperience,
+  loadSkills,
+  openProjectModal,
+  closeProjectModal,
+};

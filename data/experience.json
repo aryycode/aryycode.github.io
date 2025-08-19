@@ -1,0 +1,59 @@
+[
+  {
+    "id": 1,
+    "type": "work",
+    "title": "Fullstack Developer",
+    "company": "Freelance",
+    "period": "2023 - Present",
+    "badge": "Current",
+    "icon": "briefcase",
+    "description": "Developing end-to-end solutions including mobile applications, web platforms, and IoT systems. Specializing in modern technologies and clean, maintainable code architecture. Collaborating with clients to understand requirements and deliver high-quality solutions.",
+    "achievements": [
+      "Built 10+ mobile applications",
+      "Delivered 5+ web projects",
+      "Implemented IoT solutions"
+    ],
+    "skills": ["Android", "React", "Node.js", "Firebase", "IoT"]
+  },
+  {
+    "id": 2,
+    "type": "work",
+    "title": "Mobile App Developer",
+    "company": "Various Projects",
+    "period": "2022 - 2023",
+    "badge": null,
+    "icon": "smartphone",
+    "description": "Focused on creating intuitive and responsive mobile applications with emphasis on user experience and modern design principles.",
+    "achievements": [],
+    "skills": ["Android Studio", "Kotlin", "Material Design", "UI/UX"]
+  },
+  {
+    "id": 3,
+    "type": "education",
+    "title": "Bachelor of Computer Science",
+    "company": "Universitas Hamzanwadi",
+    "period": "2021 - Present",
+    "badge": "Education",
+    "icon": "graduation-cap",
+    "description": "Currently pursuing Bachelor's degree in Computer Science with focus on software engineering, algorithms, and modern programming technologies.",
+    "achievements": [],
+    "skills": [
+      "Software Engineering",
+      "Algorithms",
+      "Data Structures",
+      "Database Systems"
+    ]
+  },
+  {
+    "id": 4,
+    "type": "education",
+    "title": "Computer & Network Engineering",
+    "company": "SMK Negeri 1 Selong",
+    "period": "2018 - 2021",
+    "badge": "Education",
+    "icon": "monitor",
+    "description": "Completed vocational education with strong foundation in computer hardware, networking, and system administration.",
+    "achievements": [],
+    "skills": ["Networking", "Hardware", "System Admin", "Troubleshooting"]
+  }
+]
